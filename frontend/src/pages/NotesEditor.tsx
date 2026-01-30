@@ -8,18 +8,38 @@ import { AnimatedBackground } from '../components/notesEditor/AnimatedBackground
 import { Tag } from '../components/notesEditor/Tag';
 import { FooterStats } from '../components/notesEditor/FooterStats';
 import { useNavigate } from 'react-router-dom';
+import { addNotesToServer, updateNotesOnServer } from '../services/notesService';
+import { useLocation } from "react-router-dom";
 
 const NoteEditor: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [tags, setTags] = useState<string[]>([]);
+  const location = useLocation();
+
+  const editingNote = location.state?.note;
+
+  const [title, setTitle] = useState(editingNote?.title || "");
+  const [tags, setTags] = useState<string[]>(editingNote?.tags || []);
   const [currentTag, setCurrentTag] = useState('');
-  const [isPinned, setIsPinned] = useState(false);
+  const [isPinned, setIsPinned] = useState(editingNote?.isPinned || false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showBgColorPicker, setShowBgColorPicker] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
+
   const navigate = useNavigate();
 
+  const addTag = () => {
+    if (!currentTag.trim()) return;
+  
+    setTags((prev) => [...prev, currentTag.trim()]);
+    setCurrentTag("");
+  };
+  
+  const removeTag = (tagToRemove: string) => {
+    setTags((prev) => prev.filter((tag) => tag !== tagToRemove));
+  };
+  
+  
   const textColors = [
     '#000000', '#ef4444', '#f97316', '#f59e0b', '#84cc16', 
     '#10b981', '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899'
@@ -30,37 +50,153 @@ const NoteEditor: React.FC = () => {
     '#ecfdf5', '#f0fdfa', '#eff6ff', '#f5f3ff', '#fdf4ff'
   ];
 
+  // useEffect(() => {
+  //   if (editorRef.current) {
+  //     editorRef.current.focus();
+  //   }
+  // }, []);
+
   useEffect(() => {
-    if (editorRef.current) {
-      editorRef.current.focus();
+    if (editingNote && editorRef.current) {
+      editorRef.current.innerHTML = editingNote.content;
     }
-  }, []);
+  }, [editingNote]);
 
   const execCommand = (command: string, value?: string) => {
     document.execCommand(command, false, value);
     editorRef.current?.focus();
   };
+  
 
-  const handleSave = () => {
+  // const handleSave = async () => {
+  //   if (!title.trim()) {
+  //     alert("Title is required");
+  //     return;
+  //   }
+  
+  //   setIsSaving(true);
+  
+  //   try {
+  //     const content = editorRef.current?.innerHTML || "";
+      
+
+  //     const savedNote = await addNotesToServer({
+  //       title,
+  //       content,
+  //       tags,
+  //       isPinned,
+  //       isArchived: false,
+  //       color: "#ffffff",
+  //       format: "html", // because innerHTML
+  //     });
+  
+  //     console.log("Saved note:", savedNote);
+  //     alert("Note saved successfully ✨");
+  
+  //     // optional: reset editor after save
+  //     setTitle("");
+  //     editorRef.current!.innerHTML = "";
+  //     setTags([]);
+  
+  //   } catch (error) {
+  //     console.error("Error saving note:", error);
+  //     alert("Failed to save note 😢");
+  //   } finally {
+  //     setIsSaving(false);
+  //   }
+  // };
+
+  // const handleUpdate = async () => {
+  //   if (!title.trim()) {
+  //     alert("Title is required");
+  //     return;
+  //   }
+  
+  //   if (!editingNoteId) return; // the note being edited
+  
+  //   setIsSaving(true);
+  
+  //   try {
+  //     const content = editorRef.current?.innerHTML || "";
+  
+  //     const updatedNote = await updateNotesOnServer(editingNoteId, {
+  //       title,
+  //       content,
+  //       tags,
+  //       isPinned,
+  //       isArchived,
+  //       color: "#ffffff",
+  //       format: "html",
+  //     });
+  
+  //     console.log("Updated note:", updatedNote);
+  
+  //     // // Update UI
+  //     // setNotes((prev) =>
+  //     //   prev.map((note) =>
+  //     //     note.id === editingNoteId ? updatedNote : note
+  //     //   )
+  //     // );
+  
+  //     alert("Note updated successfully ✨");
+  
+  //     // Reset editor
+  //     setTitle("");
+  //     editorRef.current!.innerHTML = "";
+  //     setTags([]);
+  //     setEditingNoteId(null);
+  
+  //   } catch (error) {
+  //     console.error("Error updating note:", error);
+  //     alert("Failed to update note 😢");
+  //   } finally {
+  //     setIsSaving(false);
+  //   }
+  // };
+  
+  const handleSave = async () => {
     setIsSaving(true);
-    const content = editorRef.current?.innerHTML || '';
-    console.log('Saving note:', { title, content, tags, isPinned });
-    
-    setTimeout(() => {
+    try {
+      const content = editorRef.current?.innerHTML || "";
+
+      if (editingNote) {
+        // Editing existing note
+        await updateNotesOnServer(editingNote.id, {
+          title,
+          content,
+          tags,
+          isPinned,
+          isArchived: false,
+          color: "#ffffff",
+          format: "html",
+        });
+        alert("Note updated successfully ✨");
+      } else {
+        // Creating new note
+        await addNotesToServer({
+                title,
+                content,
+                tags,
+                isPinned,
+                isArchived: false,
+                color: "#ffffff",
+                format: "html", // because innerHTML
+              });
+        alert("Note saved successfully ✨");
+      }
+
+      // Reset editor after save
+      setTitle("");
+      setTags([]);
+      editorRef.current!.innerHTML = "";
+      navigate('/dashboard');
+
+    } catch (error) {
+      console.error(error);
+      alert("Failed to save note 😢");
+    } finally {
       setIsSaving(false);
-      alert('Note saved successfully! ✨');
-    }, 1000);
-  };
-
-  const addTag = () => {
-    if (currentTag.trim() && !tags.includes(currentTag.trim())) {
-      setTags([...tags, currentTag.trim()]);
-      setCurrentTag('');
     }
-  };
-
-  const removeTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
   };
 
   const handleCancel = () => {
@@ -104,7 +240,12 @@ const NoteEditor: React.FC = () => {
                 type="text"
                 value={currentTag}
                 onChange={(e) => setCurrentTag(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && addTag()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    addTag();
+                  }
+                }}
                 placeholder="Add tag..."
                 className="px-3 py-1.5 text-sm bg-transparent border-2 border-dashed border-pink-200 rounded-full outline-none focus:border-pink-400 placeholder:text-gray-400 min-w-[100px]"
               />

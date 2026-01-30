@@ -21,9 +21,10 @@ interface NotesSectionProps {
   icon?: React.ReactNode;
   openMenuId : string | null;
   handleMenuToggle : (noteId: string) => void;
+  handleDeleteNote : (noteId: string) => void
 }
 
-const NotesSection: React.FC<NotesSectionProps> = ({ title, notes, viewMode, icon, openMenuId, handleMenuToggle}) => {
+const NotesSection: React.FC<NotesSectionProps> = ({ title, notes, viewMode, icon, openMenuId, handleMenuToggle,handleDeleteNote}) => {
   if (notes.length === 0) return null;
 
   return (
@@ -35,11 +36,11 @@ const NotesSection: React.FC<NotesSectionProps> = ({ title, notes, viewMode, ico
       <div className={`grid gap-6 ${
         viewMode === 'grid'
           ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
-          : 'grid-cols-1'
+          : 'grid-cols-1' 
       }`}>
         {notes.map((note) => (
           <NoteCard key={note.id} note={note} viewMode={viewMode} isMenuOpen={openMenuId === note.id}
-          onMenuToggle={() => handleMenuToggle(note.id)}/>
+          onMenuToggle={() => handleMenuToggle(note.id)} handleDeleteNote={handleDeleteNote}/>
         ))}
       </div>
     </div>
