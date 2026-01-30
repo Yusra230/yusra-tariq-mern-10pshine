@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const noteSchema = new mongoose.Schema({
     title: {
@@ -11,11 +11,11 @@ const noteSchema = new mongoose.Schema({
         required: true
     },
     // Reference to the user who owns this note
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    },
+    // user: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     required: true
+    // },
     tags: [{
         type: String,
         trim: true
@@ -49,7 +49,7 @@ const noteSchema = new mongoose.Schema({
 });
 
 // Index for efficient queries
-noteSchema.index({ user: 1, createdAt: -1 });
-noteSchema.index({ title: 'text', content: 'text' });
+// noteSchema.index({ user: 1, createdAt: -1 });
+// noteSchema.index({ title: 'text', content: 'text' });
 const Note = mongoose.model('Note', noteSchema);
 export default Note;
