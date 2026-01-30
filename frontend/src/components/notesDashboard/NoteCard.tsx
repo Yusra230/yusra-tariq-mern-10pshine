@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Pin, Heart, Clock, MoreVertical, Edit2, Trash2 } from 'lucide-react';
+import DOMPurify from "dompurify";
+import { useNavigate } from "react-router-dom";
+
 
 interface Note {
   id: string;
@@ -18,9 +21,17 @@ interface NoteCardProps {
   viewMode: 'grid' | 'list';
   isMenuOpen: boolean; 
   onMenuToggle: () => void
+  handleDeleteNote: (noteId: string) => void
 }
 
-const NoteCard: React.FC<NoteCardProps> = ({ note,viewMode ,isMenuOpen, onMenuToggle})=>{ 
+
+const NoteCard: React.FC<NoteCardProps> = ({ note,viewMode ,isMenuOpen, onMenuToggle,handleDeleteNote})=>{ 
+const navigate = useNavigate();
+
+const handleEditClick = (note: Note) => {
+  navigate("/noteseditor", { state: { note } }); // pass the note object
+};
+
   return (
     <div
       className={`group relative bg-white/90 backdrop-blur-xl rounded-2xl border-2 border-pink-100 hover:border-pink-300 transition-all duration-300 hover:shadow-xl hover:shadow-pink-200/50 hover:-translate-y-1 cursor-pointer ${
@@ -37,9 +48,9 @@ const NoteCard: React.FC<NoteCardProps> = ({ note,viewMode ,isMenuOpen, onMenuTo
             <h3 className="text-xl font-bold text-gray-800 mb-2 line-clamp-1 group-hover:text-pink-600 transition-colors">
               {note.title}
             </h3>
-            <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed">
-              {note.content}
-            </p>
+            <p className="text-gray-600 text-sm line-clamp-3 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(note.content) }}
+            />
           </div>
 
           {/* Actions Menu */}
@@ -59,7 +70,7 @@ const NoteCard: React.FC<NoteCardProps> = ({ note,viewMode ,isMenuOpen, onMenuTo
                 className="absolute right-0 top-full mt-2 bg-white rounded-xl shadow-2xl border-2 border-pink-100 py-2 min-w-[160px] z-50"
                 onClick={(e) => e.stopPropagation()}
               >
-                <button className="w-full px-4 py-2 text-left hover:bg-pink-50 flex items-center space-x-2 text-gray-700">
+                <button onClick={() => handleEditClick(note)} className="w-full px-4 py-2 text-left hover:bg-pink-50 flex items-center space-x-2 text-gray-700">
                   <Edit2 className="w-4 h-4" />
                   <span>Edit</span>
                 </button>
@@ -67,7 +78,7 @@ const NoteCard: React.FC<NoteCardProps> = ({ note,viewMode ,isMenuOpen, onMenuTo
                   <Pin className="w-4 h-4" />
                   <span>Pin</span>
                 </button>
-                <button className="w-full px-4 py-2 text-left hover:bg-red-50 flex items-center space-x-2 text-red-600">
+                <button onClick={()=>{handleDeleteNote(note.id)}} className="w-full px-4 py-2 text-left hover:bg-red-50 flex items-center space-x-2 text-red-600">
                   <Trash2 className="w-4 h-4" />
                   <span>Delete</span>
                 </button>

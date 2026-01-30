@@ -7,6 +7,7 @@ import NotesDashboard from './pages/NotesDashboard.tsx'
 import NoteEditor from './pages/NotesEditor.tsx'
 import NotesLogin from './pages/Authentication.tsx'
 import Home from './pages/Home.tsx'
+import UserProfile from './pages/UserProfile.tsx'
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,9 @@ const router = createBrowserRouter([
       { path: '/dashboard', element: < NotesDashboard/> }, 
       { path: '/noteseditor', element: < NoteEditor/> },
       { path: '/', element: <Home /> },
-      { path: '/login', element: <NotesLogin /> }, ]
+      { path: '/login', element: <NotesLogin /> },
+      { path: '/myprofile', element: <UserProfile /> },
+     ]
   }
 ])
 
