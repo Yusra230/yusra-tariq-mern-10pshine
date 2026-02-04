@@ -1,0 +1,44 @@
+// middleware/auth.js
+import { verifyToken } from '../utils/jwt.js';
+import User from '../models/User.js';
+
+export const protect = async (req, res, next) => {
+    try {
+        let token;
+
+        // Get token from header
+        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+            token = req.headers.authorization.split(' ')[1];
+        }
+
+        if (!token) {
+            return res.status(401).json({
+                success: false,
+                message: 'Not authorized, no token'
+            });
+        }
+
+        // Verify token
+        const decoded = verifyToken(token);
+
+        // Get user from database
+        const user = await User.findById(decoded.userId);
+        
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        // Attach user to request
+        req.user = user;
+        next();
+        
+    } catch (error) {
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid token'
+        });
+    }
+};
