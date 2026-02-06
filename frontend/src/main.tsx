@@ -5,19 +5,27 @@ import App from './routes/App.tsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import NotesDashboard from './pages/NotesDashboard.tsx'
 import NoteEditor from './pages/NotesEditor.tsx'
-import NotesLogin from './pages/Authentication.tsx'
 import Home from './pages/Home.tsx'
-import UserProfile from './pages/UserProfile.tsx'
+import LoginPage from './pages/LoginPage.tsx'
+import SignupPage from './pages/SignupPage.tsx'
+import ProtectedRoute from './routes/ProtectedRoute.tsx'
 
 const router = createBrowserRouter([
   {
     path: '/', element: <App />, children: [
-      { path: '/dashboard', element: < NotesDashboard/> }, 
-      { path: '/noteseditor', element: < NoteEditor/> },
+      { path: '/dashboard', element: (
+        <ProtectedRoute>
+          <NotesDashboard />
+        </ProtectedRoute>
+      ) }, 
+      { path: '/noteseditor', element:  (
+        <ProtectedRoute>
+          <NoteEditor />
+        </ProtectedRoute>
+      ) },
       { path: '/', element: <Home /> },
-      { path: '/login', element: <NotesLogin /> },
-      { path: '/myprofile', element: <UserProfile /> },
-     ]
+      { path: '/login', element: <LoginPage /> },
+      { path: '/signup', element: <SignupPage /> }, ]
   }
 ])
 
