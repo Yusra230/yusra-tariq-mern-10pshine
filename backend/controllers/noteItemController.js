@@ -29,7 +29,7 @@ export const getNotes = async (req, res, next) => {
   try {
     const user = req.user._id;
     // { user, isDeleted: false }).sort({ createdAt: -1 }
-    const notes = await Note.find();
+    const notes = await Note.find({ user }).sort({ createdAt: -1 });
     res.json(notes);
   } catch (error) {
     next(error);
@@ -86,7 +86,7 @@ export const searchNotes = async (req, res, next) => {
     const user = req.user._id;
 
     const notes = await Note.find(
-      { $text: { $search: query }, user, isDeleted: false },
+      { $text: { $search: query }, user,},
       { score: { $meta: "textScore" } }
     ).sort({ score: { $meta: "textScore" } });
 
