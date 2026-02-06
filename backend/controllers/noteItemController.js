@@ -4,7 +4,7 @@ import Note from '../models/Note.js';
 export const createNewNote = async (req, res, next) => {
   try {
     const { title, content, tags, isPinned, isArchived, color, format } = req.body;
-    // const user = req.user._id; // Assuming you have authentication middleware that sets req.user
+    const user = req.user._id; // Assuming you have authentication middleware that sets req.user
 
     const note = new Note({
       title,
@@ -14,7 +14,7 @@ export const createNewNote = async (req, res, next) => {
       isArchived,
       color,
       format,
-      // user
+      user
     });
 
     await note.save();
@@ -27,7 +27,7 @@ export const createNewNote = async (req, res, next) => {
 // Get all notes for the authenticated user
 export const getNotes = async (req, res, next) => {
   try {
-    // const user = req.user._id;
+    const user = req.user._id;
     // { user, isDeleted: false }).sort({ createdAt: -1 }
     const notes = await Note.find();
     res.json(notes);
@@ -40,10 +40,10 @@ export const getNotes = async (req, res, next) => {
 export const updateNotes = async (req, res, next) => {
   try {
     const { id } = req.params;
-    // const user = req.user._id;
+    const user = req.user._id;
     // , user
 
-    const note = await Note.findOne({ _id: id });
+    const note = await Note.findOne({ _id: id, user });
     if (!note) return res.status(404).json({ message: 'Note not found' });
 
     // Update allowed fields
@@ -67,10 +67,10 @@ export const updateNotes = async (req, res, next) => {
 export const deleteNotes = async (req, res, next) => {
   try {
     const { id } = req.params;
-    // const user = req.user._id;
+    const user = req.user._id;
 
     // , user
-    const result = await Note.deleteOne({ _id: id });
+    const result = await Note.deleteOne({ _id: id, user });
     if (result.deletedCount === 0) return res.status(404).json({ message: "Note not found" });
 
     res.status(200).json({ _id: id }); // return the deleted id
