@@ -1,7 +1,7 @@
 // components/Header.tsx
-import React from 'react';
-import { ArrowLeft, BookOpen, Pin, X, Save } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { ArrowLeft, BookOpen, Pin, X, Save } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   onCancel: () => void;
@@ -16,13 +16,13 @@ export const Header: React.FC<HeaderProps> = ({
   onSave,
   isPinned,
   setIsPinned,
-  isSaving
+  isSaving,
 }) => {
   const navigate = useNavigate();
 
   const handleCancel = () => {
-    if (confirm('Are you sure you want to discard changes?')) {
-      navigate('/dashboard');
+    if (confirm("Are you sure you want to discard changes?")) {
+      navigate("/dashboard");
     }
   };
 
@@ -58,8 +58,8 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => setIsPinned(!isPinned)}
               className={`p-2.5 rounded-xl transition-all ${
                 isPinned
-                  ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg'
-                  : 'hover:bg-pink-100 text-gray-600'
+                  ? "bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg"
+                  : "hover:bg-pink-100 text-gray-600"
               }`}
             >
               <Pin className="w-5 h-5" />
@@ -78,18 +78,23 @@ export const Header: React.FC<HeaderProps> = ({
               disabled={isSaving}
               className="group relative px-6 py-2.5 bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 text-white rounded-xl font-bold shadow-xl shadow-pink-300/50 hover:shadow-2xl hover:shadow-pink-400/60 transition-all duration-500 hover:scale-105 overflow-hidden flex items-center space-x-2 disabled:opacity-70"
             >
-              {isSaving ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  <span className="hidden sm:inline">Saving...</span>
-                </>
-              ) : (
-                <>
-                  <Save className="w-5 h-5" />
-                  <span className="hidden sm:inline">Save Note</span>
-                </>
-              )}
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              {/* Content (icon + text / loader) */}
+              <div className="relative z-20 flex items-center space-x-2">
+                {isSaving ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span className="hidden sm:inline">Saving...</span>
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-5 h-5" />
+                    <span className="hidden sm:inline">Save Note</span>
+                  </>
+                )}
+              </div>
+
+              {/* Hover gradient overlay */}
+              <div className="absolute inset-0 z-10 bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </button>
           </div>
         </div>
