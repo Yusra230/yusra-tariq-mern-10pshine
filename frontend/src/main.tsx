@@ -9,6 +9,7 @@ import Home from './pages/Home.tsx'
 import LoginPage from './pages/LoginPage.tsx'
 import SignupPage from './pages/SignupPage.tsx'
 import ProtectedRoute from './routes/ProtectedRoute.tsx'
+import UserProfile from './pages/UserProfile.tsx'
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ const router = createBrowserRouter([
       { path: '/noteseditor', element:  (
         <ProtectedRoute>
           <NoteEditor />
+        </ProtectedRoute>
+      ) },
+      { path: '/myprofile', element:  (
+        <ProtectedRoute>
+          <UserProfile />
         </ProtectedRoute>
       ) },
       { path: '/', element: <Home /> },

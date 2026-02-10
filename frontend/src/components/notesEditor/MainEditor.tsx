@@ -1,5 +1,5 @@
 // components/MainEditor.tsx
-import React, { RefObject } from 'react';
+import React, {type RefObject } from 'react';
 
 interface MainEditorProps {
   editorRef: RefObject<HTMLDivElement>;

@@ -2,7 +2,7 @@ import React from 'react';
 import { Pin, Heart, Clock, MoreVertical, Edit2, Trash2 } from 'lucide-react';
 import DOMPurify from "dompurify";
 import { useNavigate } from "react-router-dom";
-
+import { smartDate } from '../../utils/date';
 
 interface Note {
   id: string;
@@ -31,6 +31,8 @@ const navigate = useNavigate();
 const handleEditClick = (note: Note) => {
   navigate("/noteseditor", { state: { note } }); // pass the note object
 };
+
+
 
   return (
     <div
@@ -104,7 +106,7 @@ const handleEditClick = (note: Note) => {
           <div className="flex items-center space-x-4 text-sm text-gray-500">
             <div className="flex items-center space-x-1">
               <Clock className="w-4 h-4" />
-              <span>{note.updatedAt}</span>
+              <span>{smartDate(note.updatedAt)}</span>
             </div>
           </div>
 
