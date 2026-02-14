@@ -5,6 +5,7 @@ import StatsGrid from '../components/userProfile/StatsGrid';
 import Achievements from '../components/userProfile/Achievements';
 import Preferences from '../components/userProfile/Preferences';
 import AnimatedBackground from '../components/userProfile/AnimatedBackground';
+import { useNavigate } from 'react-router-dom';
 
 interface UserData {
   name: string;
@@ -29,6 +30,7 @@ const UserProfile: React.FC = () => {
   });
 
   const [editData, setEditData] = useState(userData);
+  const navigate = useNavigate();
 
   const stats = [
     { label: 'Total Notes', value: '127', icon: 'BookOpen', color: 'from-pink-500 to-rose-500' },
@@ -56,10 +58,8 @@ const UserProfile: React.FC = () => {
   };
 
   const handleLogout = () => {
-    if (confirm('Are you sure you want to logout?')) {
-      console.log('Logging out...');
-      alert('Logging out... See you soon! 💫');
-    }
+    localStorage.removeItem("token"); // remove token
+    navigate("/login"); // redirect to login page
   };
 
   return (

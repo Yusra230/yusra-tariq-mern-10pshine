@@ -170,7 +170,7 @@ const NoteEditor: React.FC = () => {
           color: "#ffffff",
           format: "html",
         });
-        alert("Note updated successfully ✨");
+        // alert("Note updated successfully ✨");
       } else {
         // Creating new note
         await addNotesToServer({
@@ -182,7 +182,7 @@ const NoteEditor: React.FC = () => {
                 color: "#ffffff",
                 format: "html", // because innerHTML
               });
-        alert("Note saved successfully ✨");
+        // alert("Note saved successfully ✨");
       }
 
       // Reset editor after save

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Settings, Bell, Moon, Lock, Download, Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface PreferencesProps {
   handleDeleteAccount: () => void;
@@ -60,6 +61,11 @@ const Preferences: React.FC<PreferencesProps> = ({ handleDeleteAccount }) => {
           <Download className="w-5 h-5 text-indigo-600" />
           <span className="font-semibold text-gray-800">Export All Notes</span>
         </button>
+
+        <Link to="/change-password" className="w-full flex items-center justify-center space-x-2 p-4 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl border border-indigo-200 hover:bg-gradient-to-r hover:from-indigo-100 hover:to-blue-100 transition-all cursor-pointer">
+          <Lock className="w-5 h-5 text-indigo-600" />
+          <span className="font-semibold text-gray-800">Change Password</span>
+        </Link>
 
         <button
           onClick={handleDeleteAccount}
