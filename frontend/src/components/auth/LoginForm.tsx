@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, ArrowRight } from 'lucide-react';
 import { loginToServer } from '../../services/authService';
-
+// import logger 
 const LoginForm: React.FC = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -41,7 +41,7 @@ const LoginForm: React.FC = () => {
       localStorage.setItem("token", token);
   
       console.log("Logged in user:", user);
-      alert("Login successful!");
+      // logger.info(`login successfully`);
       navigate("/dashboard");
     } catch (error: any) {
       console.error(error);
@@ -50,7 +50,19 @@ const LoginForm: React.FC = () => {
       setLoading(false);
     }
   };
+
+  const handleForgotPassword = () => {
+    if (!formData.email) {
+      setError("Email is required");
+      return;
+    }
   
+    setError("");
+    navigate("/forgot-password", {
+      state: { email: formData.email }
+    });
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Email Input */}
@@ -124,12 +136,11 @@ const LoginForm: React.FC = () => {
             Remember me
           </span>
         </label>
-        <Link
-          to="/forgot-password"
+        <button onClick={handleForgotPassword}
           className="text-sm font-semibold text-pink-600 hover:text-purple-600 transition-colors"
         >
           Forgot Password?
-        </Link>
+        </button>
       </div>
 
       {/* Submit Button */}
