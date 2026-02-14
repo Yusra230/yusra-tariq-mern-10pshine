@@ -10,6 +10,8 @@ import LoginPage from './pages/LoginPage.tsx'
 import SignupPage from './pages/SignupPage.tsx'
 import ProtectedRoute from './routes/ProtectedRoute.tsx'
 import UserProfile from './pages/UserProfile.tsx'
+import ForgotPassword from './pages/ForgotPassword.tsx'
+import ChangePassword from './pages/ChangePassword.tsx'
 
 const router = createBrowserRouter([
   {
@@ -29,9 +31,15 @@ const router = createBrowserRouter([
           <UserProfile />
         </ProtectedRoute>
       ) },
+      { path: '/change-password', element:  (
+        <ProtectedRoute>
+          <ChangePassword />
+        </ProtectedRoute>
+      ) },
       { path: '/', element: <Home /> },
       { path: '/login', element: <LoginPage /> },
-      { path: '/signup', element: <SignupPage /> }, ]
+      { path: '/signup', element: <SignupPage /> },
+      { path: '/forgot-password', element: <ForgotPassword /> }, ]
   }
 ])
 
