@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Search Bar - Desktop */}
-          <div className="hidden md:flex flex-1 max-w-xl mx-8">
+          {/* <div className="hidden md:flex flex-1 max-w-xl mx-8">
             <div className="relative w-full group">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-pink-500 transition-colors" />
               <input
@@ -46,7 +46,7 @@ const Header: React.FC<HeaderProps> = ({
                 className="w-full pl-12 pr-4 py-3 bg-white border-2 border-gray-200 rounded-xl focus:border-pink-400 focus:ring-4 focus:ring-pink-100 outline-none transition-all duration-300 placeholder:text-gray-400"
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Right Actions */}
           <div className="flex items-center space-x-3">

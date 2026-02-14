@@ -6,7 +6,7 @@ interface FilterTabsProps {
 }
 
 const FilterTabs: React.FC<FilterTabsProps> = ({ activeFilter, setActiveFilter }) => {
-  const filters = ['all', 'pinned', 'favorites', 'work', 'personal'];
+  const filters = ['all', 'pinned'];
 
   return (
     <div className="flex items-center gap-2 mb-6 overflow-x-auto pb-2 scrollbar-hide">
