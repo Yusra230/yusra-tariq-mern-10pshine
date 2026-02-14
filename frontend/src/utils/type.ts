@@ -1,0 +1,1 @@
+export type Step = 'email' | 'verification' | 'reset' | 'success';
