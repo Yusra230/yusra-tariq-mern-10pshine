@@ -1,0 +1,36 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha --recursive",
+    "start": "nodemon app.js"
+  },
+  "devDependencies": {
+    "chai": "^6.2.2",
+    "chai-http": "^5.1.2",
+    "mocha": "^11.7.5",
+    "nodemon": "^3.1.11",
+    "sinon": "^21.0.1",
+    "supertest": "^7.2.2"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "express-validator": "^7.3.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.1.2",
+    "nodemailer": "^8.0.1",
+    "pino": "^10.3.1",
+    "pino-http": "^11.0.0",
+    "pino-pretty": "^13.1.3"
+  }
+}
