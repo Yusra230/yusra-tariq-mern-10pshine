@@ -1,10 +1,9 @@
 import Note from '../models/Note.js';
-
 // Create a new note
 export const createNewNote = async (req, res, next) => {
   try {
     const { title, content, tags, isPinned, isArchived, color, format } = req.body;
-    const user = req.user._id; // Assuming you have authentication middleware that sets req.user
+    const user = req.user._id; 
 
     const note = new Note({
       title,
@@ -80,21 +79,21 @@ export const deleteNotes = async (req, res, next) => {
 };
 
 // Search notes by text (optional)
-export const searchNotes = async (req, res, next) => {
-  try {
-    const { query } = req.query;
-    const user = req.user._id;
+// export const searchNotes = async (req, res, next) => {
+//   try {
+//     const { query } = req.query;
+//     const user = req.user._id;
 
-    const notes = await Note.find(
-      { $text: { $search: query }, user,},
-      { score: { $meta: "textScore" } }
-    ).sort({ score: { $meta: "textScore" } });
+//     const notes = await Note.find(
+//       { $text: { $search: query }, user,},
+//       { score: { $meta: "textScore" } }
+//     ).sort({ score: { $meta: "textScore" } });
 
-    res.json(notes);
-  } catch (error) {
-    next(error);
-  }
-};
+//     res.json(notes);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 // noteItemController.js
 const noteItemController = {

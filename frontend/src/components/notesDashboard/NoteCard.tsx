@@ -62,7 +62,7 @@ const handleEditClick = (note: Note) => {
                 e.stopPropagation();
                 onMenuToggle();
               }}
-              className="p-2 rounded-lg hover:bg-pink-100 transition-colors opacity-0 group-hover:opacity-100"
+              className="p-2 rounded-lg hover:bg-pink-100 transition-colors opacity-0 group-hover:opacity-100"  data-testid="menu-button" 
             >
               <MoreVertical className="w-5 h-5 text-gray-600" />
             </button>

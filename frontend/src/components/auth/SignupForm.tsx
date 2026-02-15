@@ -44,7 +44,7 @@ const SignupForm: React.FC = () => {
     setLoading(true);
   
     try {
-      const { user, token } = await addUserToServer({
+      const {token } = await addUserToServer({
         email: formData.email,
         password: formData.password,
         confirmPassword: formData.password,
@@ -53,7 +53,7 @@ const SignupForm: React.FC = () => {
       // ✅ Save the token in localStorage
       localStorage.setItem("token", token);
   
-      console.log("User registered successfully:", user);
+      // console.log("User registered successfully:", user);
   
       // Navigate to dashboard or login
       navigate("/login"); // or "/login" if you want them to login manually
@@ -68,7 +68,7 @@ const SignupForm: React.FC = () => {
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Email Input */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-gray-700 flex items-center space-x-1">
+        <label htmlFor="email" className="text-sm font-semibold text-gray-700 flex items-center space-x-1">
           <Mail className="w-4 h-4 text-pink-500" />
           <span>Email Address</span>
         </label>
@@ -88,7 +88,7 @@ const SignupForm: React.FC = () => {
 
       {/* Password Input */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-gray-700 flex items-center space-x-1">
+        <label htmlFor="password" className="text-sm font-semibold text-gray-700 flex items-center space-x-1">
           <Lock className="w-4 h-4 text-purple-500" />
           <span>Password</span>
         </label>
@@ -102,7 +102,7 @@ const SignupForm: React.FC = () => {
             required
             className="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-xl focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition-all duration-300 placeholder:text-gray-400 pr-12"
           />
-          <button
+          <button aria-label="Toggle password visibility"
             type="button"
             onClick={togglePasswordVisibility}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-pink-600 transition-colors"
@@ -119,7 +119,7 @@ const SignupForm: React.FC = () => {
 
       {/* Confirm Password Input */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-gray-700 flex items-center space-x-1">
+        <label htmlFor="confirmPassword" className="text-sm font-semibold text-gray-700 flex items-center space-x-1">
           <Lock className="w-4 h-4 text-purple-500" />
           <span>Confirm Password</span>
         </label>
@@ -133,7 +133,7 @@ const SignupForm: React.FC = () => {
             required
             className="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-xl focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition-all duration-300 placeholder:text-gray-400 pr-12"
           />
-          <button
+          <button aria-label="Toggle Confirm password visibility"
             type="button"
             onClick={toggleConfirmPasswordVisibility}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-pink-600 transition-colors"

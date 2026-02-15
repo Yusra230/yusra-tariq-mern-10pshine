@@ -35,16 +35,16 @@ const LoginForm: React.FC = () => {
         password: formData.password
       };
   
-      const { user, token } = await loginToServer(loginData);
+      const { token } = await loginToServer(loginData);
   
       // Save token to localStorage (or cookies) for authenticated requests
       localStorage.setItem("token", token);
   
-      console.log("Logged in user:", user);
+      // console.log("Logged in user:", user);
       // logger.info(`login successfully`);
       navigate("/dashboard");
     } catch (error: any) {
-      console.error(error);
+      // console.error(error);
       setError(error.message); // better to show error in UI
     } finally {
       setLoading(false);
@@ -67,7 +67,7 @@ const LoginForm: React.FC = () => {
     <form onSubmit={handleSubmit} className="space-y-5">
       {/* Email Input */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-gray-700 flex items-center space-x-1">
+        <label htmlFor="email" className="text-sm font-semibold text-gray-700 flex items-center space-x-1">
           <Mail className="w-4 h-4 text-pink-500" />
           <span>Email Address</span>
         </label>
@@ -87,7 +87,7 @@ const LoginForm: React.FC = () => {
 
       {/* Password Input */}
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-gray-700 flex items-center space-x-1">
+        <label htmlFor="password" className="text-sm font-semibold text-gray-700 flex items-center space-x-1">
           <Lock className="w-4 h-4 text-purple-500" />
           <span>Password</span>
         </label>
@@ -102,7 +102,7 @@ const LoginForm: React.FC = () => {
             className="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-xl focus:border-purple-400 focus:ring-4 focus:ring-purple-100 outline-none transition-all duration-300 placeholder:text-gray-400 pr-12"
           />
           <button
-            type="button"
+            type="button" aria-label="Toggle password visibility"
             onClick={togglePasswordVisibility}
             className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-pink-600 transition-colors"
           >
@@ -136,7 +136,7 @@ const LoginForm: React.FC = () => {
             Remember me
           </span>
         </label>
-        <button onClick={handleForgotPassword}
+        <button  type="button" onClick={handleForgotPassword}
           className="text-sm font-semibold text-pink-600 hover:text-purple-600 transition-colors"
         >
           Forgot Password?
