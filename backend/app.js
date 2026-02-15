@@ -8,11 +8,15 @@ import authRouter from "./routes/authRouter.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 //local module
 import dotenv from 'dotenv';
+import { pinoHttp } from "pino-http";
+import logger from "./utils/logger.js";
+dotenv.config();
+
 const app = express();
 
-dotenv.config();
 app.use(express.urlencoded());
 app.use(express.json());
+app.use(pinoHttp({ logger }));
 app.use(cors());
 
 app.use("/api/auth", authRouter);
