@@ -248,38 +248,51 @@ export const forgotPassword = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-      return res.status(400).json({ message: "Email is required" });
+      return res.status(400).json({
+        success: false,
+        message: "Email is required"
+      });
     }
 
     const user = await User.findOne({ email });
+
     if (!user) {
-      return res.status(404).json({ message: "Email does not exist" });
+      return res.status(404).json({
+        success: false,
+        message: "Email does not exist"
+      });
     }
 
     // Generate 6-digit numeric verification code
-    const verificationCode = Math.floor(100000 + Math.random() * 900000); // e.g., 123456
+    const verificationCode = Math.floor(100000 + Math.random() * 900000);
+
     const hashedCode = crypto
       .createHash("sha256")
       .update(String(verificationCode))
       .digest("hex");
 
-    // Save hashed code and expiry in DB
     user.resetPasswordToken = hashedCode;
-    user.resetPasswordExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 min
+    user.resetPasswordExpires = new Date(Date.now() + 10 * 60 * 1000);
+
     await user.save();
 
-    // Send verification code via email
     await sendVerificationEmail(user.email, verificationCode);
 
-    res.json({
+    return res.status(200).json({
       success: true,
-      message: "Verification code sent to your email",
+      message: "Verification code sent to your email"
     });
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+
+    return res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
   }
 };
+
   
 export const resetPassword = async (req, res) => {
   const { email, code, newPassword } = req.body;

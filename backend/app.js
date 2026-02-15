@@ -35,3 +35,4 @@ mongoose.connect(MONGO_URI).then(() => {
   console.log("error while connecting to mongo", err);
 })
 
+export {app}
